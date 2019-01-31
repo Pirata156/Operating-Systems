@@ -13,16 +13,18 @@
 
 #define DEZMEGA 10*1024*1024
 
-int main (int argc, char** argv) {
+int main(int argc, char** argv)
+{
 	int fd, i;
 	char a = 'a';
 	
 	/* verificacao dos argumentos. Se a mais ou a menos. */
 	if (argc != 2) {
-		if(argc < 2)
+		if (argc < 2) {
 			printf("Feed me the file name!\n");
-		else
+        } else {
 			printf("Woah partner, go easy on the arguments. One file only!\n");
+        }
 		exit(1);
 	}
 	
@@ -30,8 +32,9 @@ int main (int argc, char** argv) {
 	fd = open(argv[1], O_CREAT | O_TRUNC | O_WRONLY, 0640);
 	
 	/* esta parte poderia ser feita para usar menos vezes a chamada write. */
-	for (i = 0; i < DEZMEGA; i++)
+	for (i = 0; i < DEZMEGA; i++) {
 		write(fd, &a, 1); //ignora o valor de retorno da função
+    }
 
 	close(fd);
 	
