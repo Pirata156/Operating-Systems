@@ -10,8 +10,7 @@
 
 #define MAX_SIZE 65536
 
-struct intv
-{
+struct intv {
 	int priml;
 	int llivres;
 	struct intv* next;
@@ -27,11 +26,9 @@ struct intv* reserva (struct intv* livres, int n, int* reservado)
 		- ter espaço suficiente para todos juntos;
 		- ter o minimo de espaços extras. */
 	melhor = livres->llivres - n;
-	while(curr != NULL)
-	{
+	while (curr != NULL) {
 		extras = curr->llivres - n;
-		if((extras >= 0) && (extras < melhor))
-		{
+		if ((extras >= 0) && (extras < melhor)) {
 			best = curr;
 			melhor = extras;
 		}
@@ -40,21 +37,20 @@ struct intv* reserva (struct intv* livres, int n, int* reservado)
 	
 	/* Se o melhor for menor que 0, então não existe um bloco disponivel.
 	Se existe, então o melhor sitio para alocar os espaços está no apontador best. */
-	if(melhor < 0)
+	if (melhor < 0) {
 		*reservado = (-1);
-	else
-	{
+    } else {
 		*reservado = best->priml;
 		best->priml += n;
 		best->llivres -= n;
 	}
 	
 	/* Se os lugares livres for 0 no best, remove este pedaço. */
-	if(best->llivres == 0)
-	{
+	if (best->llivres == 0) {
 		curr = livres;
-		while(curr->next != best)
+		while (curr->next != best) {
 			curr = curr->next;
+        }
 		curr->next = best->next;
 		free(best);
 	}
@@ -69,20 +65,19 @@ struct intv* liberta (struct intv* livres, int lugar, int n)
 	
 	/* se o número de lugares a reservar for nulo ou negativo, ou se se pretender libertar
 	lugares extra-estádio retorna o "estádio" tal como veio */
-	if((n <= 0) || ((lugar + n) > MAX_SIZE))
+	if ((n <= 0) || ((lugar + n) > MAX_SIZE)) {
 		return livres;
+    }
 	
 	/* enquanto ainda existirem blocos de lugares e o último lugar livre do actual bloco de
 	 * lugares for menor do que o primeiro lugar que se pretende libertar*/
-	while((curr != NULL) && ((curr->priml + curr->llivres - 1) < lugar))
-	{
+	while ((curr != NULL) && ((curr->priml + curr->llivres - 1) < lugar)) {
 		prev = curr;  /* guardar o actual bloco de lugares */
 		curr = curr->next;  /* percorrer a lista ligada */
 	}
 	
 	/* Se o sitio que se quer libertar corresponde ao espaço ocupado entre dois blocos. */
-	if((prev != NULL) && (prev->priml + prev->llivres == lugar) && (curr->priml == lugar + n))
-	{
+	if ((prev != NULL) && (prev->priml + prev->llivres == lugar) && (curr->priml == lugar + n)) {
 		prev->llivres = prev->llivres + n + curr->llivres;
 		prev->next = curr->next;
 		free(curr);
@@ -90,16 +85,14 @@ struct intv* liberta (struct intv* livres, int lugar, int n)
 	}
 	
 	/* Se o espaço a libertar se estende até espaços livres a seguir. */
-	if((curr != NULL) && (curr->priml <= lugar + n))
-	{
+	if ((curr != NULL) && (curr->priml <= lugar + n)) {
 		curr->llivres = curr->llivres + n - (lugar + n - curr->priml); 
 		curr->priml = lugar;
 		return livres;
 	}
 	
 	/* Se o espaço a libertar se estende a partir dos espaços livres anteriores. */
-	if((prev != NULL) && (prev->priml + prev->llivres == lugar))
-	{
+	if ((prev != NULL) && (prev->priml + prev->llivres == lugar)) {
 		prev->llivres += n;
 		return livres;
 	}
@@ -110,13 +103,10 @@ struct intv* liberta (struct intv* livres, int lugar, int n)
 	novo->llivres = n;
 	
 	/* caso se trate de uma adição entre dois blocos, ou à cabeça. */
-	if(prev != NULL)
-	{
+	if (prev != NULL) {
 		prev->next = novo;
 		novo->next = curr;
-	}
-	else
-	{
+	} else {
 		novo->next = curr;
 		livres = novo;
 	}
@@ -131,31 +121,28 @@ int reserva2(struct intv **livres, int n)
 	int extras = -1, melhor, reservado;
 	
 	melhor = (*livres)->llivres - n;
-	while(curr != NULL)
-	{
+	while (curr != NULL) {
 		extras = curr->llivres - n;
-		if((extras >= 0) && (extras < melhor))
-		{
+		if ((extras >= 0) && (extras < melhor)) {
 			best = curr;
 			melhor = extras;
 		}
 		curr = curr->next;
 	}
 	
-	if(melhor < 0)
+	if (melhor < 0) {
 		reservado = (-1);
-	else
-	{
+    } else {
 		reservado = best->priml;
 		best->priml += n;
 		best->llivres -= n;
 	}
 	
-	if(best->llivres == 0)
-	{
+	if (best->llivres == 0) {
 		curr = *livres;
-		while(curr->next != best)
+		while (curr->next != best) {
 			curr = curr->next;
+        }
 		curr->next = best->next;
 		free(best);
 	}
@@ -166,34 +153,29 @@ void liberta2(struct intv **livres, int lugar, int n)
 {
 	struct intv *curr = *livres, *prev = NULL, *novo;
 
-	if(!((n <= 0) || ((lugar + n) > MAX_SIZE)))
-	{
-		while((curr != NULL) && ((curr->priml + curr->llivres - 1) < lugar))
-		{
+	if (!((n <= 0) || ((lugar + n) > MAX_SIZE))) {
+		while ((curr != NULL) && ((curr->priml + curr->llivres - 1) < lugar)) {
 			prev = curr;
 			curr = curr->next;
 		}
 
-		if((prev != NULL) && (prev->priml + prev->llivres == lugar) && (curr->priml == lugar + n))
-		{
+		if ((prev != NULL) && (prev->priml + prev->llivres == lugar) && (curr->priml == lugar + n)) {
 			prev->llivres = prev->llivres + n + curr->llivres;
 			prev->next = curr->next;
 			free(curr);
 		} else {
-			if((curr != NULL) && (curr->priml <= lugar + n))
-			{
+			if ((curr != NULL) && (curr->priml <= lugar + n)) {
 				curr->llivres = curr->llivres + n - (lugar + n - curr->priml); 
 				curr->priml = lugar;
 			} else {
-				if((prev != NULL) && (prev->priml + prev->llivres == lugar))
+				if ((prev != NULL) && (prev->priml + prev->llivres == lugar)) {
 					prev->llivres += n;
-				else {
+                } else {
 					novo = (struct intv *) malloc(sizeof(struct intv));
 					novo->priml = lugar;
 					novo->llivres = n;
 					
-					if(prev != NULL)
-					{
+					if (prev != NULL) {
 						prev->next = novo;
 						novo->next = curr;
 					} else {
