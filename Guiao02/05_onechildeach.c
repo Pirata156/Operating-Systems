@@ -13,20 +13,21 @@
 
 #define NOFDESCENDANTES 10
 
-int main() {
+int main()
+{
 	pid_t pid = 0;
 	int i;
 
 	/* If it's the parent, it won't go back into the cycle */
-	for(i = 1; (i <= NOFDESCENDANTES) && (!pid); i++) {
+	for (i = 1; (i <= NOFDESCENDANTES) && (!pid); i++) {
 		pid = fork();
 
-		if(pid < 0) {
+		if (pid < 0) {
 			perror("this fork failed. noone loves it, it should just die");
 			_exit(-1);
 		}
 
-		if(pid > 0) {
+		if (pid > 0) {
 			// Parent
 			wait(NULL);
 			printf("I\'m the parent now, pId: %d and my father is pId: %d. Just made the child pId: %d.\n",getpid(), getppid(), pid);

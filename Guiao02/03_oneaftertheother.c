@@ -14,18 +14,19 @@
 
 #define NUMBEROFCHILDREN 10
 
-int main() {
+int main()
+{
 	pid_t pid;
 	int i, status;
 
-	for(i = 1; i <= NUMBEROFCHILDREN; i++) {
+	for (i = 1; i <= NUMBEROFCHILDREN; i++) {
 		pid = fork();
-		if(pid == -1) {
+		if (pid == -1) {
 			perror("fork failed. terminating all processes");
 			return -1;
 		}
 
-		if(pid == 0) {
+		if (pid == 0) {
 			// Child
 			printf("I\'m the son with pId: %d and number: %d.", getpid(), i);
 			printf("My father has the pId: %d.\n", getppid());
@@ -34,10 +35,11 @@ int main() {
 		} else {
 			// Parent
 			wait(&status);	//waiting for any child to terminate
-			if(WIFEXITED(status)) {		// checks if child terminated normally
+			if (WIFEXITED(status)) {		// checks if child terminated normally
 				printf("Child with pId: %d terminated with the code: %d.\n", pid, WEXITSTATUS(status));
-			} else
+			} else {
 				perror("Child went wrong in life.");
+            }
 		}
 	}
 	return 0;

@@ -10,7 +10,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int main() {
+int main()
+{
 
 	printf("I\'m a simple program leading a simple life.\n");
 	printf("My process id is %d and my father\'s pId: %d.\n", getpid(), getppid());

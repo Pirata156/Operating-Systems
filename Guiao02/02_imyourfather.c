@@ -14,30 +14,32 @@
 #include <stdio.h>
 #include <string.h>
 
-int main(int argc, char** argv) {
-
+int main(int argc, char** argv)
+{
 	pid_t childpid;		// pid_t is the same as int
 	int orphan = 0;
 
 	/* Verifying if we want a zombie child or not */
-	if((argc > 1) && (!strcmp("-orphan",argv[1])))
+	if ((argc > 1) && (!strcmp("-orphan",argv[1]))) {
 		orphan = 1;
+    }
 
 	/* Trying to create a child */
 	childpid = fork();
 
-	if(childpid == -1){
+	if (childpid == -1) {
 		perror("fork failed to make offspring");
 		return -1;
 	}
 
-	if(childpid > 0) {
+	if (childpid > 0) {
 		// Father's working area
 		/* wait() allows the father to wait for the son to finnish before proceeding
 		 * this allows us to control that the son doesn't become a zombie process
 		 */
-		if(!orphan)
+		if (!orphan) {
 			wait(NULL);
+        }
 		printf("I\'m the father with the process id: %d.\n", getpid());
 		printf("I created a son with the pId: %d and I\'m son to the pId: %d.\n",childpid, getppid());
 		/* Like before, you can verify the father's getppid() the same as the bash pid with "ps" */
@@ -46,8 +48,9 @@ int main(int argc, char** argv) {
 		/* sleep() allow us to stop the process for a time, this will allow us to delay the son
 		 * long enough so that the father can finish working first and turn the son to a zombie
 		 */
-		if(orphan)
+		if (orphan) {
 			sleep(1);
+        }
 		printf("I\'m the son with the process id: %d.\n", getpid());
 		/* Son's getpid() is the same as Father's childpid */
 		printf("My father has the pId: %d.\n", getppid());
