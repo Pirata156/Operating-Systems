@@ -7,7 +7,8 @@
 
 #include <unistd.h>
 
-int main() {
+int main()
+{
 	/* execl used because we know all the arguments and how many there are
 	 * required to always have NULL as last argument */
 	execlp("ls","ls","-l",NULL);

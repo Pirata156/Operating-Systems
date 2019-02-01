@@ -20,40 +20,41 @@
  * In this version, if the program runs more then 255 times, 
  * the information at the end will be incorrect */
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
 	pid_t pids[argc - 1], pid = 1;
 	int status, statusc, i, counter = 1; 
 	char snum[10];
-	if(argc < 2) {
-		if(write(STDERR_FILENO,"no program to execute",21)) {};
+	if (argc < 2) {
+		if (write(STDERR_FILENO,"no program to execute",21)) {};
 		return -1;
 	}
 
-	for(i = 0; (i < (argc - 1)); i++) {
+	for (i = 0; (i < (argc - 1)); i++) {
 		pid = fork();
 
-		if(pid < 0) {
-			if(write(STDERR_FILENO,"fork failed",11)) {};
+		if (pid < 0) {
+			if (write(STDERR_FILENO,"fork failed",11)) {};
 			_exit(-1);
 		}
 
-		if(pid == 0) {
+		if (pid == 0) {
 			// Child
-			while(1) {
+			while (1) {     // infinite cycle
 				pid = fork();
-				if(pid < 0) {
-					if(write(STDERR_FILENO,"childs fork failed",18)) {};
+				if (pid < 0) {
+					if (write(STDERR_FILENO,"childs fork failed",18)) {};
 					_exit(-1);
 				}
-				if(pid == 0) {
+				if (pid == 0) {
 					// Grandchild
 					execlp(argv[i + 1], argv[i + 1], NULL);
 					_exit(-1);
 				} else {
 					// Child
 					wait(&statusc);
-					if(WIFEXITED(statusc)) {
-						if(WEXITSTATUS(statusc) == 0) {
+					if (WIFEXITED(statusc)) {
+						if (WEXITSTATUS(statusc) == 0) {
 							return counter;
 						} else {
 							counter++;
@@ -67,13 +68,13 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	for(i = 0; i < (argc - 1); i++) {
+	for (i = 0; i < (argc - 1); i++) {
 		waitpid(pids[i],&status,0);
-		if(WIFEXITED(status)) {
+		if (WIFEXITED(status)) {
 			sprintf(snum, "%d\n",WEXITSTATUS(status));
-			if(write(STDOUT_FILENO, argv[i + 1], strlen(argv[i + 1]))) {};
-			if(write(STDOUT_FILENO, "\t\t", 2)) {};
-			if(write(STDOUT_FILENO, snum, strlen(snum))) {};
+			if (write(STDOUT_FILENO, argv[i + 1], strlen(argv[i + 1]))) {};
+			if (write(STDOUT_FILENO, "\t\t", 2)) {};
+			if (write(STDOUT_FILENO, snum, strlen(snum))) {};
 		}
 	}
 	return 0;

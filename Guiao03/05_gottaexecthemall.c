@@ -10,19 +10,20 @@
 #include <sys/wait.h>
 #include <stdio.h>
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
 	int i;
 	pid_t pid;
 
-	for(i = 1; i < argc; i++) {
+	for (i = 1; i < argc; i++) {
 		pid = fork();
 
-		if(pid < 0) {
+		if (pid < 0) {
 			perror("Titanic was an accident, this fail was a disaster");
 			_exit(-1);
 		}
 
-		if(pid == 0) {
+		if (pid == 0) {
 			// Child
 			printf("Sending out child in mission codename: %s\n", argv[i]);
 			/* as we know what the arguments are, using execl.
@@ -32,8 +33,9 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	for(i = 1; i < argc; i++)
+	for (i = 1; i < argc; i++) {
 		wait(NULL);
+    }
 
 	return 0;
 }

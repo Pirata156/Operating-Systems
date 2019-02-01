@@ -11,7 +11,8 @@
 
 #define COMMAND "ls -la"
 
-int main() {
+int main()
+{
 	int res;
 	res = mysystem(COMMAND);
 	printf("mysystem function returned value %d\n", res);

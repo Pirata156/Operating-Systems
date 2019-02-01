@@ -9,17 +9,18 @@
 #include <sys/wait.h>
 #include <stdio.h>
 
-int main() {
+int main()
+{
 	pid_t pid;	// same as int
 
 	pid = fork();
 
-	if(pid < 0) {
+	if (pid < 0) {
 		perror("fork failed");
 		_exit(-1);
 	}
 
-	if(pid == 0) {
+	if (pid == 0) {
 		// Child
 		/* using exec with the p (execlp) because it's a command in the system path */
 		execlp("ls","ls","-l",NULL);

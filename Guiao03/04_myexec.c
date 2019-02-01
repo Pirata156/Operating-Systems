@@ -12,10 +12,11 @@
 
 #define NAMEPROGRAM "./myarguments"
 
-int main(int argc, char ** argv) {
+int main(int argc, char ** argv)
+{
 	pid_t pid;
 
-	if(argc < 2) {
+	if (argc < 2) {
 		perror("so lonely, no arguments passed");
 		return (-1);
 	}
@@ -25,12 +26,12 @@ int main(int argc, char ** argv) {
 	printf("Executing without changing the first argument (argv[0])\n");
 	pid = fork();
 
-	if(pid < 0) {
+	if (pid < 0) {
 		perror("first fork failed");
 		_exit(-1);
 	}
 
-	if(pid == 0) {
+	if (pid == 0) {
 		/* using execvp because assuming both programs are in the same folder (already the correct path) */
 		execvp(NAMEPROGRAM, argv);
 		/* This will execute the program defined in NAMEPROGRAM
@@ -48,12 +49,12 @@ int main(int argc, char ** argv) {
 	printf("\nExecuting after changing the first argument to %s (argv[0])\n", NAMEPROGRAM);
 	pid = fork();
 
-	if(pid < 0) {
+	if (pid < 0) {
 		perror("second fork failed");
 		_exit(-1);
 	}
 
-	if(pid == 0) {
+	if (pid == 0) {
 		argv[0] = NAMEPROGRAM;
 		/* using execvp because assuming both programs are in the same folder (already the correct path) */
 		execvp(argv[0], argv);
