@@ -15,10 +15,8 @@ int main (int argc, char** argv)
 	char buf[100];
 	int n = 1;
 	
-	if(argc == 1) //verificar que o mycat nao recebe argumentos
-	{
-		while(n > 0) //continuamente le do STDIN e escreve no STDOUT até não ler nada
-		{	
+	if (argc == 1) { //verificar que o mycat nao recebe argumentos
+		while (n > 0) { //continuamente le do STDIN e escreve no STDOUT até não ler nada	
 			/* 0 = STDIN */
 			n = read(0,buf,1);
 			/* 1 = STDOUT */

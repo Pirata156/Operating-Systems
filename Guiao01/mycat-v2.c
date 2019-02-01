@@ -32,8 +32,7 @@ int main (int argc, char** argv) {
 		n = read (0,buf,N);
 		
 		// se nao ler nada.
-		if (n <= 0)
-		{
+		if (n <= 0) {
 			free(buf);
 			exit(0);
 		}
