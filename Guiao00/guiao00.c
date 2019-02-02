@@ -17,6 +17,20 @@ struct intv {
 };
 
 /* Exercicios 3.1 e 4 */
+/** @brief Reserva um determinado número de lugares
+ *
+ *	Função que reserva um determinado número de lugares seguidos, indicando qual o
+ *  primeiro lugar reservado, mesmo que essa área tenha sido previamente usada e
+ * 	libertada, tentando reservar numa sequência livre com o minimo de lugares
+ *	excedentários. No caso de não conseguir reservar, devolve -1 em vez do primeiro
+ *	lugar reservado.
+ *
+ *	@param livres lista ligada com as informações sobre os lugares livres
+ *	@param n número de lugares que pretendemos reservar
+ *	@param reservado valor por onde indicar o primeiro lugar reservado
+ *
+ *	@return a lista ligada com os lugares atualizados após a reserva
+ */
 struct intv* reserva (struct intv* livres, int n, int* reservado)
 {
 	struct intv *curr = livres, *best = livres;
@@ -59,6 +73,17 @@ struct intv* reserva (struct intv* livres, int n, int* reservado)
 
 /* recebe a estrutura com o estádio, o primeiro lugar a libertar e o número de lugares a libertar.
  * assumindo que nao se manda libertar lugares que estao livres. */
+/** @brief Liberta um determinado número de lugares a partir de uma posição ocupada
+ *
+ *	Função que liberta um determinado número de lugares seguidos, indicando qual o
+ *  primeiro lugar reservado a libertar e o número de lugares a libertar.
+ *
+ *	@param livres lista ligada com as informações sobre os lugares livres
+ *	@param lugar primeiro lugar reservado que pretendemos libertar
+ *	@param n número de lugares que pretendemos libertar
+ *
+ *	@return a lista ligada com os lugares atualizados após a reserva
+ */
 struct intv* liberta (struct intv* livres, int lugar, int n)
 {
 	struct intv *curr = livres, *prev = NULL, *novo;
@@ -114,7 +139,8 @@ struct intv* liberta (struct intv* livres, int lugar, int n)
 }
 
 /* Exercicios 3.2 e 4 */
-/* Quase a mesma coisa que nas versões anteriores mas com umas alterações na parte de retorno de dados. */
+/* Quase a mesma coisa que nas versões anteriores mas com umas alterações na parte de retorno de dados.
+ * Agora usa dupla indireção. */
 int reserva2(struct intv **livres, int n)
 {
 	struct intv *curr = *livres, *best = *livres;
