@@ -32,7 +32,7 @@ int main (int argc, char** argv)
 		/* quickly verifying the number of arguments - printing the menu case of mismatch */
 		printf(MENU);
 		perror("invalid number of arguments");
-		exit(-1);
+		exit(EXIT_FAILURE);
 	} else {
 
 		/* opening the file for the input
@@ -59,6 +59,7 @@ int main (int argc, char** argv)
 			perror("file redirection failed");
 			exit(err);
 		}
+		close(fd_in);
 		/* closes stdout and directs it to fd_out */
 		close(STDOUT_FILENO);
 		err = dup(fd_out);
@@ -66,6 +67,7 @@ int main (int argc, char** argv)
 			perror("file redirection failed");
 			exit(err);
 		}
+		close(fd_out);
 		/* closes stderr and directs it to fd_err */
 		close(STDERR_FILENO);
 		err = dup(fd_err);
@@ -73,6 +75,7 @@ int main (int argc, char** argv)
 			perror("file redirection failed");
 			exit(err);
 		}
+		close(fd_err);
 
 		/* Now we can use the file descriptors for the standard in (STDIN_FILENO::int or stdin::File* or 0), for the standard
 		 * out (STDOUT_FILENO::int or stdout::File* or 1) or for the standard error (STDERR_FILENO::int or stderr::File* or 2); */
@@ -90,17 +93,17 @@ int main (int argc, char** argv)
 			if (pid == 0) {
 				// child process
 				execlp("wc","wc",NULL);
-				_exit(-1);
+				_exit(EXIT_FAILURE);
 			}
 		}
 
 		/* only the case when execlp is executed with the child process the program arrives here
 		 * or in the case that the argument isn't one of the 2 possible choices - nothing happens */
-		close(fd_in);
-		close(fd_out);
-		close(fd_err);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		close(STDERR_FILENO);
 
 		/* no need to get all back to proper situations because we are exiting the program */
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
 }
