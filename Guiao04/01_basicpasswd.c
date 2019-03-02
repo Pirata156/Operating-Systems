@@ -32,7 +32,7 @@ int main (int argc, char** argv)
 		/* quickly verifying the number of arguments - printing the menu case of mismatch */
 		printf(MENU);
 		perror("invalid number of arguments");
-		exit(-1);
+		exit(EXIT_FAILURE);
 	} else {
 
 		/* opening the file for the input
@@ -59,6 +59,7 @@ int main (int argc, char** argv)
 			perror("file redirection failed");
 			exit(err);
 		}
+		close(fd_in);
 		/* closes stdout and directs it to fd_out */
 		close(STDOUT_FILENO);
 		err = dup(fd_out);
@@ -66,6 +67,7 @@ int main (int argc, char** argv)
 			perror("file redirection failed");
 			exit(err);
 		}
+		close(fd_out);
 		/* closes stderr and directs it to fd_err */
 		close(STDERR_FILENO);
 		err = dup(fd_err);
@@ -73,6 +75,7 @@ int main (int argc, char** argv)
 			perror("file redirection failed");
 			exit(err);
 		}
+		close(fd_err);
 
 		/* Now we can use the file descriptors for the standard in (STDIN_FILENO::int or stdin::File* or 0), for the standard
 		 * out (STDOUT_FILENO::int or stdout::File* or 1) or for the standard error (STDERR_FILENO::int or stderr::File* or 2); */
@@ -102,6 +105,7 @@ int main (int argc, char** argv)
 			}
 		}
 
+		// Since on this case perror is being used for the print to the stderr, it automatically adds a error description after each line it prints
 		if (!strcmp(argv[1],"-printf")) {
 			/* using printf e scanf */
 			if (printf("We using the scanf and printf pair!\n") > 0) {
@@ -109,8 +113,8 @@ int main (int argc, char** argv)
 					n = scanf("%[^\n]%*c", buf);		// reads line to buf
 					/* scanf doesn't reads lines with white spaces easily. so had to use a bit of reGex */
 					if (n > 0) {
-						count = printf("%s\n", buf);
-						perror(buf);
+						count = printf("%s\n", buf);	// printing to stdout - "saidas.txt" on this case
+						perror(buf);					// printing to stderr - "erros.txt" on this case
 					}
 				}
 				if (count < 0) {
@@ -144,11 +148,11 @@ int main (int argc, char** argv)
 			}
 		}
 
-		close(fd_in);
-		close(fd_out);
-		close(fd_err);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		close(STDERR_FILENO);
 
 		/* no need to get all back to proper situations because we are exiting the program */
-		exit(0);
+		exit(EXIT_SUCCESS);
 	}
 }

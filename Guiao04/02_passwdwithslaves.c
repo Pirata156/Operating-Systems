@@ -111,6 +111,9 @@ int main (int argc, char** argv)
 							// This if is just to clear the warning from return from the write function
 					}
 				}
+				/* write doesn't normally needs it but if no printing is done, do a fflush here too
+				 * so that the parent won't close the files before it prints on them */
+				// exit(EXIT_SUCCESS);
 			}
 
 		}
@@ -139,6 +142,9 @@ int main (int argc, char** argv)
 				} else {
 					perror("Shiver me timbers! Boat being gulped by the water even before leaving dry land!\n");
 				}
+				/* need to force a flush for it to print to the output before the child leaves the process 
+				 * and a normal exit / return from the process is a good way for that since auto flushes */
+				exit(EXIT_SUCCESS);
 			}
 		}
 
@@ -170,9 +176,13 @@ int main (int argc, char** argv)
 						// This if is just to clear the warning from return from the fprintf function
 					}
 				}
+				/* need to force a flush for it to print to the output before the child leaves the process 
+				 * and a normal exit / return from the process is a good way for that since auto flushes */
+				exit(EXIT_SUCCESS);
 			}
 		}
 
+		// parent closes all the files at the end
 		close(STDIN_FILENO);
 		close(STDOUT_FILENO);
 		close(STDERR_FILENO);

@@ -83,7 +83,7 @@ int main (int argc, char** argv)
 		if (!strcmp(argv[1],"-parent")) {
 			/* main process does it all */
 			execlp("wc","wc",NULL);
-			_exit(-1);
+			_exit(EXIT_FAILURE);
 			/* file descriptors aren't closed */ 
 		}
 
