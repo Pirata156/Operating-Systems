@@ -90,6 +90,10 @@ int main (int argc, char** argv)
 		if (!strcmp(argv[1],"-child")) {
 			/* creates a child process and makes it run */
 			pid = fork();
+			if (pid < 0) {
+				perror("no child was made, universe didn't wanted it to happen");
+				_exit(EXIT_FAILURE);
+		    }
 			if (pid == 0) {
 				// child process
 				execlp("wc","wc",NULL);

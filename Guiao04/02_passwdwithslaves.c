@@ -84,7 +84,7 @@ int main (int argc, char** argv)
 		if (!strcmp(argv[1],"-write")) {
 			/* using read() and write() */
 			pid = fork();
-			if (pid == -1) {
+			if (pid < 0) {
 				perror("fork failed. terminating all processes");
 				_exit(EXIT_FAILURE);
 			}
@@ -121,7 +121,7 @@ int main (int argc, char** argv)
 		if (!strcmp(argv[1],"-printf")) {
 			/* using printf e scanf */
 			pid = fork();
-			if (pid == -1) {
+			if (pid < 0) {
 				perror("fork failed. terminating all processes");
 				_exit(EXIT_FAILURE);
 			}
@@ -151,7 +151,7 @@ int main (int argc, char** argv)
 		if (!strcmp(argv[1],"-fprintf")) {
 			/* using printf e scanf */
 			pid = fork();
-			if (pid == -1) {
+			if (pid < 0) {
 				perror("fork failed. terminating all processes");
 				_exit(EXIT_FAILURE);
 			}

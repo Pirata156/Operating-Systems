@@ -46,6 +46,10 @@ int main (int argc, char** argv)
 
 	pid = fork();
 
+	if (pid < 0) {
+		perror("no child was made, universe didn't wanted it to happen");
+		_exit(EXIT_FAILURE);
+    }
 	if (pid == 0) {
 		// child process
 		err = dup2(fd_in, STDIN_FILENO);
