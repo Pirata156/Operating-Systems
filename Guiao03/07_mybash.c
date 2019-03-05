@@ -36,6 +36,8 @@ int main()
 	while (!exit_flag) {
 		background_flag = 0;
 
+		/* The current directory can be shown using the "getcwd(NULL,size)" function
+		 * but for not using it for this case far simplicity or laziness */
 		if (write(STDOUT_FILENO,PROMPT_WORD,PROMPT_SIZE)) {};
 		n = readln_v1(STDIN_FILENO, buff, 1024);
 

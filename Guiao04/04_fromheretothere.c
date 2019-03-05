@@ -75,8 +75,8 @@ int main (int argc, char** argv)
 	} else {
 		// parent process
 		wait(NULL);
-		close(STDIN_FILENO);
-		close(STDOUT_FILENO);
+		close(fd_in);
+		close(fd_out);
 	}
 	exit(EXIT_SUCCESS);
 }
